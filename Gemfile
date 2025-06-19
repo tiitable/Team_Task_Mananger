@@ -43,6 +43,7 @@ gem 'thruster', require: false
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
+  gem 'factory_bot_rails'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
 
@@ -55,7 +56,6 @@ end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem 'factory_bot_rails'
   gem 'rspec-rails'
   gem 'rubocop', require: false # 追加
   gem 'rubocop-performance', require: false # 追加
@@ -68,6 +68,5 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
-  gem 'factory_bot_rails'
   gem 'selenium-webdriver'
 end
