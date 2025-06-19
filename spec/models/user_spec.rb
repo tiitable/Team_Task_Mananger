@@ -4,7 +4,7 @@ describe User do
   let(:nickname) { 'テスト太郎' }
   let(:email) { 'test@example.com' }
   let(:password) { '12345678' }
-  let(:user) { User.new(nickname: nickname, email: email, password: password, password_confirmation: password) }
+  let(:user) { User.new(nickname: nickname, email: email, password: password, password_confirmation: password) } # 変数に格納
 
   describe '.first' do
     before do
@@ -41,7 +41,8 @@ describe User do
           end
         end
       end
-      describe 'nickname存在性の検証' do
+
+      describe '存在性の検証' do
         context 'nicknameが空欄の場合' do
           let(:nickname) { '' }
 
