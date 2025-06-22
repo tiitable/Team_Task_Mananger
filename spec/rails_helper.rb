@@ -1,5 +1,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
+require 'ferrum'
+require 'capybara/cuprite'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
@@ -35,8 +37,26 @@ rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
 
-# 临时使用 rack_test 驱动来排查问题
-Capybara.default_driver = :rack_test
+# Capybara configuration - 使用cuprite
+Capybara.server = :puma, { Silent: true }
+Capybara.default_max_wait_time = 5
+
+# Cuprite configuration
+Capybara.register_driver :cuprite do |app|
+  Capybara::Cuprite::Driver.new(
+    app,
+    window_size: [1200, 800],
+    browser_options: {
+      'disable-gpu' => true,
+      'no-sandbox' => true,
+      'disable-dev-shm-usage' => true
+    }
+  )
+end
+
+Capybara.default_driver = :cuprite
+Capybara.javascript_driver = :cuprite
+Capybara.current_driver = :cuprite
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -75,4 +95,10 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   config.include FactoryBot::Syntax::Methods
   require 'factory_bot_rails'
+
+  config.include Devise::Test::IntegrationHelpers, type: :system
+
+  config.before(:each, type: :system) do
+    driven_by :cuprite
+  end
 end

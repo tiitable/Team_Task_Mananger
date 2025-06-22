@@ -1,8 +1,6 @@
 require 'rails_helper'
 
-describe 'User', type: :system do
-  before { driven_by :selenium_chrome_headless }
-
+RSpec.describe 'User', type: :system do
   # ユーザー情報入力用の変数
   let(:email) { 'test@example.com' }
   let(:nickname) { 'テスト太郎' }
@@ -85,5 +83,52 @@ describe 'User', type: :system do
         end
       end
     end
+  end
+
+  describe 'ログイン機能の検証' do
+    let(:user) { create(:user, nickname: nickname, email: email, password: password, password_confirmation: password) }
+
+    context '正常系' do
+      before do
+        user # ユーザーを作成
+        visit '/users/sign_in'
+        fill_in 'user_email', with: email
+        fill_in 'user_password', with: password
+        click_button 'ログイン'
+      end
+
+      it 'ログインに成功し、トップページにリダイレクトする' do
+        expect(current_path).to eq('/')
+      end
+
+      it 'ログイン成功時のフラッシュメッセージを表示する' do
+        expect(page).to have_content('Signed in successfully')
+      end
+    end
+
+    context '異常系' do
+      before do
+        user # ユーザーを作成
+        visit '/users/sign_in'
+        fill_in 'user_email', with: email
+        fill_in 'user_password', with: 'wrong_password'
+        click_button 'ログイン'
+      end
+
+      it 'ログインに失敗し、ページ遷移しない' do
+        expect(current_path).to eq('/users/sign_in')
+      end
+
+      it 'ログイン失敗時のフラッシュメッセージを表示する' do
+        expect(page).to have_content('Invalid Email or password')
+      end
+    end
+  end
+end
+
+RSpec.describe 'Cuprite smoke', type: :system do
+  it 'shows home' do
+    visit '/'
+    expect(page).to have_content('Home#top')
   end
 end
