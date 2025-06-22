@@ -15,7 +15,7 @@ require 'rspec/rails'
 # run as spec files by default. This means that files in spec/support that end
 # in _spec.rb will both be required and run as specs, causing the specs to be
 # run twice. It is recommended that you do not name files matching this glob to
-# end with _spec.rb. You can configure this pattern with the --pattern
+# end in _spec.rb. You can configure this pattern with the --pattern
 # option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
 #
 # The following line is provided for convenience purposes. It has the downside
@@ -26,7 +26,7 @@ require 'rspec/rails'
 # Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
 
 # Ensures that the test database schema matches the current schema file.
-# If there are pending migrations it will invoke `db:test:prepare` to
+# If there are pending migrations it will invoke `db:test_prepare` to
 # recreate the test database by loading the schema.
 # If you are not using ActiveRecord, you can remove these lines.
 begin
@@ -34,6 +34,10 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
+# 临时使用 rack_test 驱动来排查问题
+Capybara.default_driver = :rack_test
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [

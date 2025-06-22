@@ -53,11 +53,12 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem 'rubocop-rails-omakase', require: false
+  # Use RSpec for testing [https://rspec.info/]
+  gem 'rspec-rails'
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem 'rspec-rails'
   gem 'rubocop', require: false # 追加
   gem 'rubocop-performance', require: false # 追加
   gem 'rubocop-rails', require: false # 追加
@@ -70,4 +71,5 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'webdrivers'
 end
