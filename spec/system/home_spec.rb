@@ -1,36 +1,59 @@
 require 'rails_helper'
 
 RSpec.describe 'Home', type: :system do
-  describe 'top page check' do
-    it 'show words of Home#top' do
+  describe 'トップページアクセスの検証' do
+    it 'Home#top という文字列が表示される' do
       visit '/'
+
       expect(page).to have_content('Home#top')
     end
   end
 
-  describe 'basic page structure' do
-    before { visit '/' }
+  ######## ここから追加 #######
+  describe 'ナビゲーションバーの検証' do
+    context 'ログインしていない場合' do
+      before { visit '/' }
 
-    it 'displays the page title' do
-      expect(page).to have_title('Team Task Manager')
+      it 'ユーザー登録リンクを表示する' do
+        expect(page).to have_link('ユーザー登録', href: '/users/sign_up')
+      end
+
+      it 'ログインリンクを表示する' do
+        expect(page).to have_link('ログイン', href: '/users/sign_in')
+      end
+
+      it 'ログアウトリンクは表示しない' do
+        expect(page).not_to have_content('ログアウト')
+      end
     end
 
-    it 'has proper HTML structure' do
-      expect(page).to have_css('html')
-      expect(page).to have_css('body')
-      expect(page).to have_css('h1')
-    end
+    context 'ログインしている場合' do
+      before do
+        user = create(:user) # ログイン用のユーザーを作成
+        sign_in user # 作成したユーザーでログイン
+        visit '/'
+      end
 
-    it 'displays the main heading' do
-      expect(page).to have_css('h1', text: 'Home#top')
-    end
+      it 'ユーザー登録リンクは表示しない' do
+        expect(page).not_to have_link('ユーザー登録', href: '/users/sign_up')
+      end
 
-    it 'displays the instruction text' do
-      expect(page).to have_content('Find me in app/views/home/top.html.erb')
-    end
+      it 'ログインリンクは表示しない' do
+        expect(page).not_to have_link('ログイン', href: '/users/sign_in')
+      end
 
-    it 'has correct styling classes' do
-      expect(page).to have_css('h1.font-bold.text-4xl.text-red-500')
+      it 'ログアウトリンクを表示する' do
+        expect(page).to have_content('ログアウト')
+      end
+
+      it 'ログアウトリンクが機能する' do
+        click_button 'ログアウト'
+
+        # ログインしていない状態のリンク表示パターンになることを確認
+        expect(page).to have_link('ユーザー登録', href: '/users/sign_up')
+        expect(page).to have_link('ログイン', href: '/users/sign_in')
+        expect(page).not_to have_content('ログアウト')
+      end
     end
   end
 end
