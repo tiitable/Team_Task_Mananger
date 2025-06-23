@@ -97,6 +97,7 @@ RSpec.configure do |config|
   require 'factory_bot_rails'
 
   config.include Devise::Test::IntegrationHelpers, type: :system
+  config.include Devise::Test::IntegrationHelpers, type: :request
 
   config.before(:each, type: :system) do
     driven_by :cuprite

@@ -43,8 +43,9 @@ ja:
   devise:
     failure:
       invalid: "%{authentication_keys}またはパスワードが違います。"
-    registrations:
       user:
+        unauthenticated: "ログインしてください。"
+    registrations:
         signed_up: ユーザー登録に成功しました。
     sessions:
       new:
