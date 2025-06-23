@@ -1,5 +1,9 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:show]
+
+  def show # 追加
+    @post = Post.find_by(id: params[:id])
+  end
 
   def new
     @post = Post.new
