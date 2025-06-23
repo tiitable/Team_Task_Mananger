@@ -1,7 +1,11 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
+  before_action :authenticate_user!, except: [:show, :index]
 
-  def show # 追加
+  def index
+    @posts = Post.limit(10).order(created_at: :desc)
+  end
+
+  def show
     @post = Post.find_by(id: params[:id])
   end
 
@@ -14,7 +18,7 @@ class PostsController < ApplicationController
     @post.user_id = current_user.id # ログインユーザのIDを代入
     if @post.save
       flash[:notice] = '投稿しました'
-      redirect_to root_path # 一時的にトップページへリダイレクト(要修正)
+      redirect_to posts_path
     else
       flash[:alert] = '投稿に失敗しました'
       render :new
