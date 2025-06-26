@@ -1,0 +1,53 @@
+<script setup>
+import VerticalNavSectionTitle from '@/@layouts/components/VerticalNavSectionTitle.vue'
+import VerticalNavGroup from '@layouts/components/VerticalNavGroup.vue'
+import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
+</script>
+
+<template>
+  <VerticalNavLink
+    :item="{
+      title: 'Dashboard',
+      icon: 'ri-home-smile-line',
+      to: '/dashboard',
+    }"
+  />
+  <VerticalNavLink
+    :item="{
+      title: 'Tasks',
+      icon: 'ri-task-line',
+      to: '/tasks',
+    }"
+  />
+  <VerticalNavLink
+    :item="{
+      title: 'Work Groups',
+      icon: 'ri-group-line',
+      to: '/work-groups',
+    }"
+  />
+
+  <VerticalNavLink
+    :item="{
+      title: 'Notes',
+      icon: 'ri-pencil-line',
+      to: '/notes',
+    }"
+  />
+  <VerticalNavLink
+    :item="{
+      title: 'Profile',
+      icon: 'ri-user-line',
+      to: '/Profile',
+    }"
+  />
+
+  <VerticalNavLink class="bottom-nav-link"
+    :item="{
+      title: 'Logout',
+      icon: 'ri-logout-box-line',
+      to: '/logout',
+    }"
+  />
+
+</template>
